@@ -56,7 +56,7 @@ USER ${NB_UID}
 RUN stack build && stack install
 
 # Run the notebook
-ENV PATH $(stack path --local-install-root)/bin:$(stack path --snapshot-install-root)/bin:$(stack path --compiler-bin):/home/${NB_USER}/.local/bin:${PATH}
+ENV PATH ${HOME}/.stack/global-project/.stack-work/install/x86_64-linux/lts-13.25/8.6.5/bin:${HOME}/.stack/snapshots/x86_64-linux/lts-13.25/8.6.5/bin:/opt/ghc/8.6.5/bin:${HOME}/.local/bin:${PATH}
 RUN ihaskell install --stack
 WORKDIR ${HOME}
 RUN jupyter notebook --generate-config
