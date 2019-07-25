@@ -29,6 +29,10 @@ let
       (display: { name = "ihaskell-${display}"; value = self.callCabal2nix display "${ihaskell-display-src}/ihaskell-${display}" {}; })
       [ "aeson" "blaze" "charts" "diagrams" "gnuplot" "graphviz" "hatex" "juicypixels" "magic" "plot" "rlangqq" "static-canvas" "widgets" ]);
   haskellPackages = nixpkgs.haskell.packages."${compiler}".override (old: {
+    all-cabal-hashes = nixpkgs.fetchurl {
+      url    = "https://github.com/commercialhaskell/all-cabal-hashes/archive/57cefe07ffacd76628cdbcb8c5bb17b285e27d0d.tar.gz";
+      sha256 = "1nyn7r8l8qqan049s41zr8l5nlp2bcjl6zgvh83f7sr821zq6rh0";
+    };
     overrides = nixpkgs.lib.composeExtensions (old.overrides or (_: _: {})) (self: super: {
       ihaskell          = nixpkgs.haskell.lib.overrideCabal (
                           self.callCabal2nix "ihaskell" ihaskell-src {}) (_drv: {
@@ -46,6 +50,9 @@ let
       ghc-parser        = self.callCabal2nix "ghc-parser" ghc-parser-src {};
       ipython-kernel    = self.callCabal2nix "ipython-kernel" ipython-kernel-src {};
       zeromq4-haskell   = self.callHackage "zeromq4-haskell" "0.8.0" {};
+      hlint             = self.callHackage "hlint" "2.2.2" {};
+      ghc-lib-parser    = self.callHackage "ghc-lib-parser" "8.8.0.20190723" {};
+      haskell-src-exts-util = self.callHackage "haskell-src-exts-util" "0.2.5" {};
 
       haskell-src-exts  = self.haskell-src-exts_1_21_0;
       inline-r          = nixpkgs.haskell.lib.dontCheck super.inline-r;
